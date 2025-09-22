@@ -1,0 +1,16 @@
+[
+  {
+    "id": "2a2a0bd0-265c-49ce-be03-81fc12f361cf",
+    "username": "Пётр",
+    "email": "qwerty@mail.ru",
+    "password": "$2b$10$l9smZOEl/kTTURqA2TY7IuYg.hZpJfzuaPKm353umvo3R1s9WnQUy",
+    "createdAt": "2025-09-22T13:49:17.816Z"
+  },
+  {
+    "id": "e9c2a97e-3975-44e4-ab4b-93e7420966bc",
+    "username": "1111",
+    "email": "qwerty1@mail.com",
+    "password": "$2b$10$p9C.SyuQFo/CF57bxHzateYNx5eJ79Ve56hnUuu9bLeDaQghyasbu",
+    "createdAt": "2025-09-22T13:50:31.025Z"
+  }
+]

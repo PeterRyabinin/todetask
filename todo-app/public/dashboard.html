@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Мои задачи - Todo App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header class="dashboard-header">
+            <h1>Мои задачи</h1>
+            <div class="user-info">
+                <span id="usernameDisplay"></span>
+                <button onclick="logout()" class="btn btn-secondary">Выйти</button>
+            </div>
+        </header>
+
+        <div class="todo-form">
+            <h3>Добавить новую задачу</h3>
+            <form id="addTodoForm">
+                <div class="form-group">
+                    <input type="text" id="todoTitle" placeholder="Название задачи" required>
+                </div>
+                <div class="form-group">
+                    <textarea id="todoDescription" placeholder="Описание (необязательно)"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Добавить задачу</button>
+            </form>
+        </div>
+
+        <div class="todos-container">
+            <h3>Список задач</h3>
+            <div id="todosList" class="todos-list"></div>
+        </div>
+    </div>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user'));
+
+        if (!token || !user) {
+            window.location.href = 'login.html';
+        }
+
+        document.getElementById('usernameDisplay').textContent = `Привет, ${user.username}!`;
+
+        async function loadTodos() {
+            try {
+                const response = await fetch('/api/todos', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const todos = await response.json();
+                displayTodos(todos);
+            } catch (error) {
+                console.error('Error loading todos:', error);
+            }
+        }
+
+        function displayTodos(todos) {
+            const todosList = document.getElementById('todosList');
+            
+            if (todos.length === 0) {
+                todosList.innerHTML = '<p>Нет задач. Добавьте первую задачу!</p>';
+                return;
+            }
+
+            todosList.innerHTML = todos.map(todo => `
+                <div class="todo-item ${todo.completed ? 'completed' : ''}">
+                    <div class="todo-content">
+                        <h4>${todo.title}</h4>
+                        ${todo.description ? `<p>${todo.description}</p>` : ''}
+                        <small>Создано: ${new Date(todo.createdAt).toLocaleDateString()}</small>
+                    </div>
+                    <div class="todo-actions">
+                        <button onclick="toggleTodo('${todo.id}')" class="btn btn-sm ${todo.completed ? 'btn-secondary' : 'btn-success'}">
+                            ${todo.completed ? 'Отменить' : 'Выполнено'}
+                        </button>
+                        <button onclick="deleteTodo('${todo.id}')" class="btn btn-sm btn-danger">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('addTodoForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('todoTitle').value;
+            const description = document.getElementById('todoDescription').value;
+
+            try {
+                const response = await fetch('/api/todos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ title, description })
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                if (response.ok) {
+                    document.getElementById('todoTitle').value = '';
+                    document.getElementById('todoDescription').value = '';
+                    loadTodos();
+                }
+            } catch (error) {
+                console.error('Error adding todo:', error);
+            }
+        });
+
+        async function toggleTodo(id) {
+            try {
+                const response = await fetch(`/api/todos/${id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ completed: true })
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                if (response.ok) {
+                    loadTodos();
+                }
+            } catch (error) {
+                console.error('Error toggling todo:', error);
+            }
+        }
+
+        async function deleteTodo(id) {
+            if (!confirm('Вы уверены, что хотите удалить эту задачу?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/todos/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                if (response.ok) {
+                    loadTodos();
+                }
+            } catch (error) {
+                console.error('Error deleting todo:', error);
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // Load todos on page load
+        loadTodos();
+    </script>
+</body>
+</html>
