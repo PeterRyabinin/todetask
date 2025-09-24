@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель администратора - MarketPlace</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="logo">MarketPlace - Админ</h1>
+            <div class="nav-links">
+                <a href="index.html">Главная</a>
+                <a href="products.html">Товары</a>
+                <a href="admin.html">Панель админа</a>
+                <div id="user-menu">
+                    <span id="user-name"></span>
+                    <a href="#" id="logout-btn" class="btn btn-outline">Выйти</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        <h2>Панель администратора</h2>
+        
+        <div id="admin-stats" class="admin-stats">
+            <!-- Stats will be loaded here -->
+        </div>
+
+        <div class="admin-sections">
+            <section class="admin-section">
+                <h3>Добавить новый товар</h3>
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label for="product-name">Название товара:</label>
+                        <input type="text" id="product-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-price">Цена:</label>
+                        <input type="number" id="product-price" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-description">Описание:</label>
+                        <textarea id="product-description" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-category">Категория:</label>
+                        <input type="text" id="product-category" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product-image">URL изображения:</label>
+                        <input type="url" id="product-image">
+                    </div>
+                    <div class="form-group">
+                        <label for="product-stock">Количество на складе:</label>
+                        <input type="number" id="product-stock" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Добавить товар</button>
+                </form>
+            </section>
+
+            <section class="admin-section">
+                <h3>Управление товарами</h3>
+                <div id="products-management">
+                    <!-- Products list for management -->
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/auth.js"></script>
+    <script>
+        // Check if user is admin
+        document.addEventListener('DOMContentLoaded', function() {
+            if (!Auth.isLoggedIn() || !Auth.isAdmin()) {
+                alert('Доступ запрещен. Требуются права администратора.');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            loadAdminStats();
+            loadProductsForManagement();
+            setupProductForm();
+        });
+
+        async function loadAdminStats() {
+            try {
+                const response = await Auth.makeAuthenticatedRequest('http://localhost:3000/api/admin/stats');
+                const stats = await response.json();
+                
+                const statsContainer = document.getElementById('admin-stats');
+                statsContainer.innerHTML = `
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.totalUsers}</div>
+                        <div>Пользователей</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.totalProducts}</div>
+                        <div>Товаров</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${stats.totalOrders}</div>
+                        <div>Заказов</div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        async function loadProductsForManagement() {
+            try {
+                const response = await fetch('http://localhost:3000/api/products');
+                const products = await response.json();
+                
+                const managementContainer = document.getElementById('products-management');
+                managementContainer.innerHTML = products.map(product => `
+                    <div class="product-card">
+                        <img src="${product.image}" alt="${product.name}" class="product-image">
+                        <h4>${product.name}</h4>
+                        <p>Цена: $${product.price}</p>
+                        <p>В наличии: ${product.stock}</p>
+                        <button class="btn btn-danger" onclick="deleteProduct(${product.id})">Удалить</button>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading products:', error);
+            }
+        }
+
+        function setupProductForm() {
+            const form = document.getElementById('add-product-form');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const productData = {
+                    name: document.getElementById('product-name').value,
+                    price: parseFloat(document.getElementById('product-price').value),
+                    description: document.getElementById('product-description').value,
+                    category: document.getElementById('product-category').value,
+                    image: document.getElementById('product-image').value || 'https://via.placeholder.com/200',
+                    stock: parseInt(document.getElementById('product-stock').value)
+                };
+
+                try {
+                    const response = await Auth.makeAuthenticatedRequest('http://localhost:3000/api/products', {
+                        method: 'POST',
+                        body: JSON.stringify(productData)
+                    });
+
+                    if (response.ok) {
+                        alert('Товар успешно добавлен!');
+                        form.reset();
+                        loadProductsForManagement();
+                    }
+                } catch (error) {
+                    console.error('Error adding product:', error);
+                    alert('Ошибка при добавлении товара');
+                }
+            });
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('Вы уверены, что хотите удалить этот товар?')) {
+                return;
+            }
+
+            // Note: You would need to implement delete endpoint in the backend
+            alert('Функция удаления требует реализации на бэкенде');
+        }
+    </script>
+</body>
+</html>
