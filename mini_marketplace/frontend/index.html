@@ -7,44 +7,70 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <nav class="navbar">
-        <div class="nav-container">
-            <h1 class="logo">MarketPlace</h1>
+    <header>
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>Mini Marketplace</h1>
+            </div>
             <div class="nav-links">
-                <a href="index.html">Главная</a>
-                <a href="products.html">Товары</a>
-                <a href="cart.html">Корзина</a>
-                <div id="auth-buttons">
-                    <a href="login.html" class="btn btn-outline">Войти</a>
-                    <a href="register.html" class="btn btn-primary">Регистрация</a>
+                <a href="#" onclick="showSection('products')">Товары</a>
+                <a href="#" onclick="showSection('cart')">Корзина</a>
+                <div id="auth-section">
+                    <a href="#" onclick="showSection('login')">Войти</a>
+                    <a href="#" onclick="showSection('register')">Регистрация</a>
                 </div>
-                <div id="user-menu" style="display: none;">
+                <div id="user-section" style="display: none;">
                     <span id="user-name"></span>
-                    <a href="#" id="logout-btn" class="btn btn-outline">Выйти</a>
-                    <span id="admin-link" style="display: none;">
-                        <a href="admin.html" class="btn btn-primary">Панель админа</a>
-                    </span>
+                    <button onclick="logout()">Выйти</button>
                 </div>
             </div>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <main class="container">
-        <section class="hero">
-            <h2>Добро пожаловать в Mini Marketplace</h2>
-            <p>Лучшие товары по выгодным ценам</p>
-            <a href="products.html" class="btn btn-primary btn-large">Начать покупки</a>
+    <main>
+        <!-- Секция регистрации -->
+        <section id="register-section" class="section">
+            <div class="auth-form">
+                <h2>Регистрация</h2>
+                <form id="register-form">
+                    <input type="text" id="reg-name" placeholder="Имя" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-password" placeholder="Пароль" required>
+                    <button type="submit">Зарегистрироваться</button>
+                </form>
+                <p>Уже есть аккаунт? <a href="#" onclick="showSection('login')">Войти</a></p>
+            </div>
         </section>
 
-        <section class="featured-products">
-            <h3>Популярные товары</h3>
-            <div id="featured-products" class="products-grid">
-                <!-- Products will be loaded here -->
+        <!-- Секция авторизации -->
+        <section id="login-section" class="section">
+            <div class="auth-form">
+                <h2>Вход</h2>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required>
+                    <input type="password" id="login-password" placeholder="Пароль" required>
+                    <button type="submit">Войти</button>
+                </form>
+                <p>Нет аккаунта? <a href="#" onclick="showSection('register')">Зарегистрироваться</a></p>
             </div>
+        </section>
+
+        <!-- Секция товаров -->
+        <section id="products-section" class="section">
+            <h2>Все товары</h2>
+            <div id="products-grid" class="products-grid"></div>
+        </section>
+
+        <!-- Секция корзины -->
+        <section id="cart-section" class="section">
+            <h2>Корзина</h2>
+            <div id="cart-items"></div>
+            <div id="cart-total"></div>
         </section>
     </main>
 
     <script src="js/auth.js"></script>
-    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/cart.js"></script>
 </body>
 </html>

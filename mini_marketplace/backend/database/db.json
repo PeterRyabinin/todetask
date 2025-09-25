@@ -1,0 +1,70 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "email": "user@example.com",
+      "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
+      "name": "Test User"
+    },
+    {
+      "id": 2,
+      "email": "1111@mail.com",
+      "password": "$2b$10$ig6/21bfOJz8pzF5V/cJueyreYZE4bDkIhIC/OYmGys3PdIUC9ZeC",
+      "name": "1111"
+    },
+    {
+      "id": 3,
+      "email": "2222@mail.ru",
+      "password": "$2b$10$egQ4RWAoBYeYmckAtwWdmOhVg2e0J5PjlMKpQPJryj8z.dMbYjZ9K",
+      "name": "2222"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "name": "Ноутбук HP Pavilion",
+      "price": 1500,
+      "category": "Электроника",
+      "image": "https://via.placeholder.com/200",
+      "description": "Мощный ноутбук для работы и игр"
+    },
+    {
+      "id": 2,
+      "name": "Смартфон Samsung",
+      "price": 800,
+      "category": "Электроника",
+      "image": "https://via.placeholder.com/200",
+      "description": "Современный смартфон с отличной камерой"
+    },
+    {
+      "id": 3,
+      "name": "Книга 'JavaScript для начинающих'",
+      "price": 25,
+      "category": "Книги",
+      "image": "https://via.placeholder.com/200",
+      "description": "Лучшая книга для изучения JavaScript"
+    },
+    {
+      "id": 4,
+      "name": "Кофемашина",
+      "price": 300,
+      "category": "Бытовая техника",
+      "image": "https://via.placeholder.com/200",
+      "description": "Автоматическая кофемашина для дома"
+    }
+  ],
+  "carts": [
+    {
+      "userId": 2,
+      "items": [
+        {
+          "productId": 1,
+          "name": "Ноутбук HP Pavilion",
+          "price": 1500,
+          "image": "https://via.placeholder.com/200",
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}
