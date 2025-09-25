@@ -58,3 +58,27 @@ async function addToCart(productId) {
         alert('Ошибка при добавлении в корзину');
     }
 }
+
+// Обновляем функцию showSection в основном коде
+function showSection(sectionName) {
+    document.querySelectorAll('.section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Проверяем права доступа к админ-панели
+    if (sectionName === 'admin' && (!currentUser || currentUser.role !== 'admin')) {
+        alert('Доступ запрещен!');
+        showSection('products');
+        return;
+    }
+    
+    document.getElementById(`${sectionName}-section`).classList.add('active');
+    
+    if (sectionName === 'products') {
+        loadProducts();
+    } else if (sectionName === 'cart') {
+        loadCart();
+    } else if (sectionName === 'admin') {
+        openAdminTab('add-product');
+    }
+}

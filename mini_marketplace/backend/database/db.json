@@ -4,19 +4,22 @@
       "id": 1,
       "email": "user@example.com",
       "password": "$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi",
-      "name": "Test User"
+      "name": "Test User",
+      "role": "user"
     },
     {
       "id": 2,
-      "email": "1111@mail.com",
-      "password": "$2b$10$ig6/21bfOJz8pzF5V/cJueyreYZE4bDkIhIC/OYmGys3PdIUC9ZeC",
-      "name": "1111"
+      "email": "admin@example.com",
+      "password": "$2a$10$rOzZRf5U/aej2vKr8FHfU.HH1kUJNhBTb6ftcQ.mK.7p8YVd7J1nK",
+      "name": "Administrator",
+      "role": "admin"
     },
     {
       "id": 3,
-      "email": "2222@mail.ru",
-      "password": "$2b$10$egQ4RWAoBYeYmckAtwWdmOhVg2e0J5PjlMKpQPJryj8z.dMbYjZ9K",
-      "name": "2222"
+      "email": "1111@mail.com",
+      "password": "$2b$10$01HkrCtZXLTx/Y8A9eaDCekFBlyvwK7NpVHNm4LeyaX.98ZyMepwi",
+      "name": "1111",
+      "role": "admin"
     }
   ],
   "products": [
@@ -51,20 +54,15 @@
       "category": "Бытовая техника",
       "image": "https://via.placeholder.com/200",
       "description": "Автоматическая кофемашина для дома"
+    },
+    {
+      "id": 5,
+      "name": "Помидор",
+      "price": 1200,
+      "category": "Овощь",
+      "image": "http://qweqwe/qweqwe/qwe.com",
+      "description": ""
     }
   ],
-  "carts": [
-    {
-      "userId": 2,
-      "items": [
-        {
-          "productId": 1,
-          "name": "Ноутбук HP Pavilion",
-          "price": 1500,
-          "image": "https://via.placeholder.com/200",
-          "quantity": 1
-        }
-      ]
-    }
-  ]
+  "carts": []
 }
