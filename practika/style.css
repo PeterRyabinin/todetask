@@ -1,0 +1,36 @@
+*{
+    padding: 0;
+    margin: 0;
+}
+
+.div1{
+    background-color: aquamarine;
+    padding-top: 50px; padding-bottom: 50px;
+    padding-left: 50px; padding-right: 50px;
+}
+
+.div2{
+    background-color: rgb(255, 146, 127);
+    padding-top: 50px; padding-bottom: 50px;
+    padding-left: 50px; padding-right: 50px;
+}
+
+.div3{
+    background-color: rgb(127, 129, 255);
+    padding-top: 50px; padding-bottom: 50px;
+    padding-left: 50px; padding-right: 50px;
+}
+
+.div4{
+    background-color: rgb(255, 127, 180);
+    padding-top: 50px; padding-bottom: 50px;
+    padding-left: 50px; padding-right: 50px;
+}
+
+header{
+    background-color: antiquewhite;
+}
+
+footer{
+    background-color: black;
+}
