@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добро пожаловать</title>
+</head>
+<body>
+
+    <div id="content" style="display:none;">
+        <h1>Добро пожаловать, <span id="username"></span>!</h1>
+        <a href="#" id="logoutLink">Выйти</a>
+    </div>
+
+    <div id="loginPrompt" style="display:block;">
+        <p>Доступ закрыт. Пожалуйста, <a href="index.html">войдите</a>.</p>
+    </div>
+
+    <script>
+        // Проверяем, есть ли имя пользователя в localStorage
+        const username = localStorage.getItem('username');
+
+        if (username) {
+            // Если есть — показываем содержимое
+            document.getElementById('username').textContent = username;
+            document.getElementById('content').style.display = 'block';
+            document.getElementById('loginPrompt').style.display = 'none';
+
+            // Обработчик кнопки "Выйти"
+            document.getElementById('logoutLink').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('username'); // Удаляем данные пользователя
+                window.location.href = 'index.html'; // Перенаправляем на главную
+            });
+        } else {
+            // Если нет — показываем сообщение о необходимости входа
+            document.getElementById('loginPrompt').style.display = 'block';
+            document.getElementById('content').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>

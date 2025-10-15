@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Регистрация и Вход</title>
+</head>
+<body>
+
+    <h1>Регистрация</h1>
+    <form id="registerForm">
+        <input type="text" id="regUsername" placeholder="Имя пользователя" required>
+        <input type="password" id="regPassword" placeholder="Пароль" required>
+        <button type="submit">Зарегистрироваться</button>
+    </form>
+    <div id="regError" style="color:red;"></div>
+    <div id="regSuccess" style="color:green;"></div>
+
+    <h1>Вход</h1>
+    <form id="loginForm">
+        <input type="text" id="loginUsername" placeholder="Имя пользователя" required>
+        <input type="password" id="loginPassword" placeholder="Пароль" required>
+        <button type="submit">Войти</button>
+    </form>
+    <div id="loginError" style="color:red;"></div>
+
+    <script>
+        // Используем localStorage для хранения пользователей
+        const usersKey = 'users';
+
+        // Функция для получения пользователей из localStorage
+        function getUsers() {
+            const usersJSON = localStorage.getItem(usersKey);
+            return usersJSON ? JSON.parse(usersJSON) : {};
+        }
+
+        // Функция для сохранения пользователей в localStorage
+        function saveUsers(users) {
+            localStorage.setItem(usersKey, JSON.stringify(users));
+        }
+
+        // Простая функция хеширования (НЕ безопасна, для демонстрации)
+        function simpleHash(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                const char = str.charCodeAt(i);
+                hash = (hash << 5) - hash + char;
+                hash |= 0; // Преобразуем в 32-битное целое
+            }
+            return hash.toString();
+        }
+
+        // Обработчик формы регистрации
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('regUsername').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            const users = getUsers();
+
+            if (users[username]) {
+                document.getElementById('regError').textContent = 'Пользователь с таким именем уже существует.';
+            } else {
+                // Сохраняем хеш пароля (в реальных приложениях используйте bcrypt на сервере)
+                users[username] = simpleHash(password);
+                saveUsers(users);
+                document.getElementById('regSuccess').textContent = 'Регистрация успешна!';
+                document.getElementById('regError').textContent = '';
+            }
+        });
+
+        // Обработчик формы входа
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const username = document.getElementById('loginUsername').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            const users = getUsers();
+
+            if (users[username] && users[username] === simpleHash(password)) {
+                // Устанавливаем "сессию" в localStorage
+                localStorage.setItem('currentUser', username);
+                window.location.href = 'welcome.html'; // Перенаправление на страницу приветствия
+            } else {
+                document.getElementById('loginError').textContent = 'Неверное имя пользователя или пароль.';
+            }
+        });
+    </script>
+
+</body>
+</html>
