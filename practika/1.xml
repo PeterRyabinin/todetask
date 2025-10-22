@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+    <person>
+        <name>Иван Иванов</name>
+        <phone>+7-123-456-7890</phone>
+        <email>ivan@example.com</email>
+        <address>
+            <city>Москва</city>
+            <street>ул. Пушкина, д. 1</street>
+        </address>
+    </person>
+    <person>
+        <name>Мария Петрова</name>
+        <phone>+7-987-654-3210</phone>
+        <email>maria@example.com</email>
+        <address>
+            <city>Санкт-Петербург</city>
+            <street>Невский пр., д. 25</street>
+        </address>
+    </person>
+</contacts>
